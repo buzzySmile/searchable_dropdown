@@ -617,10 +617,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
         labelOutput ?? SizedBox.shrink(),
         Stack(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: result,
-            ),
+            result,
             widget.underline is NotGiven
                 ? SizedBox.shrink()
                 : Positioned(
