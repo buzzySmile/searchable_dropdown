@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'searchable_dropdown.dart';
 
-class SearchDropdownFormFieldCustom<T> extends FormField<T> {
-  SearchDropdownFormFieldCustom({
+class SearchableDropdownFormField<T> extends FormField<T> {
+  SearchableDropdownFormField({
     Key key,
     @required String labelText,
     Widget searchTitle,
@@ -67,7 +67,7 @@ class SearchDropdownFormFieldCustom<T> extends FormField<T> {
 
 class _SearchDropdownCustomFieldState<T> extends FormFieldState<T> {
   @override
-  SearchDropdownFormFieldCustom<T> get widget => super.widget;
+  SearchableDropdownFormField<T> get widget => super.widget;
 
   @override
   void didChange(T value) {

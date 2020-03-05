@@ -110,7 +110,7 @@ class _ObjectEditState extends State<ObjectEdit> {
                         },
                       ),
                       const SizedBox(height: 12.0),
-                      SearchDropdownFormFieldCustom(
+                      SearchableDropdownFormField(
                         labelText: 'SEARCHABLE Dropdown',
                         searchTitle: Text(
                           'Справочник "Приборы учета"',
