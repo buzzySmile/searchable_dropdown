@@ -1,40 +1,37 @@
 import 'package:flutter/material.dart';
 import 'searchable_dropdown.dart';
 
-class SearchableDropdownFormField<T> extends FormField<T> {
-  SearchableDropdownFormField({
+class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
+  SearchableDropdownMultiFormField({
     Key key,
     @required String labelText,
     Widget searchTitle,
-    T defaultValue,
-    T initialValue,
+    List<T> initialValues,
     @required List<T> items,
     bool isRequired = false,
     // FocusNode focusNode,
     bool autovalidate = false,
-    FormFieldValidator<T> validator,
+    FormFieldValidator<List<T>> validator,
     this.onChanged,
-    FormFieldSetter<T> onSaved,
-  })  : assert(items != null || items.isNotEmpty || defaultValue != null),
+    FormFieldSetter<List<T>> onSaved,
+  })  : assert(items != null || items.isNotEmpty),
         super(
             key: key,
-            initialValue: initialValue != null ? initialValue : defaultValue,
+            initialValue: initialValues ?? <T>[],
             autovalidate: autovalidate,
-            validator: (selectedItem) {
-              if (isRequired && selectedItem == null) {
+            validator: (List<T> selectedItems) {
+              if (isRequired &&
+                  (selectedItems == null || selectedItems.isEmpty)) {
                 return 'Необходимо выбрать значение';
               }
-              return validator == null ? null : validator(selectedItem);
+              return validator == null ? null : validator(selectedItems);
             },
-            onSaved: (T item) => onSaved(item),
-            builder: (FormFieldState<T> field) {
+            onSaved: onSaved,
+            builder: (FormFieldState<List<T>> field) {
               final InputDecoration effectiveDecoration = InputDecoration(
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 isDense: true,
-                fillColor: defaultValue == field.value
-                    ? null
-                    : Colors.greenAccent.shade100,
               ).applyDefaults(Theme.of(field.context).inputDecorationTheme);
 
               return Column(
@@ -50,11 +47,15 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                       decoration: effectiveDecoration.copyWith(
                           errorText: field.errorText),
                       isEmpty: field.value == null,
-                      child: SearchableDropdown.single(
+                      child: SearchableDropdown.multiple(
                         underline: Container(),
                         isExpanded: true,
                         searchHint: searchTitle,
-                        value: field.value,
+                        selectedItems: items.expand<int>((item) {
+                          if (field.value.contains(item))
+                            return [items.indexOf(item)];
+                          return [];
+                        }).toList(),
                         displayClearIcon: false,
                         items: items.map<DropdownMenuItem<T>>((T item) {
                           return DropdownMenuItem(
@@ -62,24 +63,29 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                             child: Text(item.toString()),
                           );
                         }).toList(),
-                        onChanged: onChanged == null ? null : field.didChange,
+                        onChanged: (List<int> indices) => onChanged == null
+                            ? null
+                            : field.didChange(indices
+                                .map((index) => items.elementAt(index))
+                                .toList()),
                       ),
                     ),
                   ]);
             });
 
-  final ValueChanged<T> onChanged;
+  final ValueChanged<List<T>> onChanged;
 
   @override
-  FormFieldState<T> createState() => _SearchDropdownCustomFieldState();
+  FormFieldState<List<T>> createState() =>
+      _SearchDropdownMultiCustomFieldState();
 }
 
-class _SearchDropdownCustomFieldState<T> extends FormFieldState<T> {
+class _SearchDropdownMultiCustomFieldState<T> extends FormFieldState<List<T>> {
   @override
-  SearchableDropdownFormField<T> get widget => super.widget;
+  SearchableDropdownMultiFormField<T> get widget => super.widget;
 
   @override
-  void didChange(T value) {
+  void didChange(List<T> value) {
     super.didChange(value);
     assert(widget.onChanged != null);
     widget.onChanged(value);

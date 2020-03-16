@@ -2,6 +2,8 @@ import 'package:example_formfield/base_object.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:searchable_dropdown/searchable_dropdown_form_field.dart';
+import 'package:searchable_dropdown/searchable_dropdown_multi_form_field.dart';
+// import 'package:searchable_dropdown/searchable_dropdown_multi_form_field.dart';
 
 const List<BaseObject> mdTypesList = [
   BaseObject(id: 1, name: 'SomeObject #0'),
@@ -47,6 +49,7 @@ class _ObjectEditState extends State<ObjectEdit> {
   bool _autovalidate = false;
 
   ObjectData objectData = ObjectData();
+  List<int> selectedItems;
 
   void _handleSave() {
     final FormState form = _formKey.currentState;
@@ -91,7 +94,7 @@ class _ObjectEditState extends State<ObjectEdit> {
                     children: <Widget>[
                       DropdownButtonFormField<BaseObject>(
                         decoration: InputDecoration(
-                          labelText: 'DEFAULT Dropdown',
+                          labelText: 'DEFAULT Dropdown form field',
                           filled: true,
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 8.0),
@@ -110,8 +113,8 @@ class _ObjectEditState extends State<ObjectEdit> {
                         },
                       ),
                       const SizedBox(height: 12.0),
-                      SearchableDropdownFormField(
-                        labelText: 'SEARCHABLE Dropdown',
+                      SearchableDropdownFormField<BaseObject>(
+                        labelText: 'SEARCHABLE Dropdown form field',
                         searchTitle: Text(
                           'Справочник "Приборы учета"',
                           textAlign: TextAlign.center,
@@ -120,6 +123,40 @@ class _ObjectEditState extends State<ObjectEdit> {
                         items: mdTypesList,
                         defaultValue: objectData.mdDefaultType,
                         initialValue: objectData.mdInitType,
+                        onChanged: (value) => print('Value changed to $value'),
+                        onSaved: (value) {
+                          print('SEARCH = $value');
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                  child: Text(
+                    'MULTI DROPDOWN',
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.black54,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Divider(thickness: 2.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 12.0),
+                      SearchableDropdownMultiFormField<BaseObject>(
+                        isRequired: true,
+                        labelText: 'SEARCHABLE MULTI form field',
+                        searchTitle: Text(
+                          'Справочник "Приборы учета"',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        items: mdTypesList,
+                        initialValues: [mdTypesList[1], mdTypesList[3]],
                         onChanged: (value) => print('Value changed to $value'),
                         onSaved: (value) {
                           print('SEARCH = $value');
