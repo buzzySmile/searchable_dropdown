@@ -6,6 +6,7 @@ class SearchableDropdownFormField<T> extends FormField<T> {
     Key key,
     @required String labelText,
     Widget searchTitle,
+    Widget buttonTitle = const Text('Закрыть'),
     T defaultValue,
     T initialValue,
     @required List<T> items,
@@ -32,9 +33,9 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                 isDense: true,
-                fillColor: defaultValue == field.value
-                    ? null
-                    : Colors.greenAccent.shade100,
+                fillColor: (defaultValue != null && defaultValue != field.value)
+                    ? Colors.greenAccent.shade100
+                    : null,
               ).applyDefaults(Theme.of(field.context).inputDecorationTheme);
 
               return Column(
@@ -51,6 +52,13 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                           errorText: field.errorText),
                       isEmpty: field.value == null,
                       child: SearchableDropdown.single(
+                        doneButton: (selectedItemsDone, doneContext) =>
+                            FlatButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => Navigator.pop(doneContext),
+                          child: buttonTitle,
+                        ),
+                        closeButton: null,
                         underline: Container(),
                         isExpanded: true,
                         searchHint: searchTitle,

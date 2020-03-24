@@ -6,6 +6,7 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
     Key key,
     @required String labelText,
     Widget searchTitle,
+    Widget buttonTitle = const Text('Закрыть'),
     List<T> initialValues,
     @required List<T> items,
     bool isRequired = false,
@@ -48,12 +49,20 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
                           errorText: field.errorText),
                       isEmpty: field.value == null,
                       child: SearchableDropdown.multiple(
+                        doneButton: (selectedItemsDone, doneContext) =>
+                            FlatButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => Navigator.pop(doneContext),
+                          child: buttonTitle,
+                        ),
+                        closeButton: null,
                         underline: Container(),
                         isExpanded: true,
                         searchHint: searchTitle,
                         selectedItems: items.expand<int>((item) {
-                          if (field.value.contains(item))
+                          if (field.value.contains(item)) {
                             return [items.indexOf(item)];
+                          }
                           return [];
                         }).toList(),
                         displayClearIcon: false,
