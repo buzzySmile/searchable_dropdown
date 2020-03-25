@@ -6,7 +6,6 @@ class SearchableDropdownFormField<T> extends FormField<T> {
     Key key,
     @required String labelText,
     Widget searchTitle,
-    Widget buttonTitle = const Text('Закрыть'),
     T defaultValue,
     T initialValue,
     @required List<T> items,
@@ -52,13 +51,12 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                           errorText: field.errorText),
                       isEmpty: field.value == null,
                       child: SearchableDropdown.single(
-                        doneButton: (selectedItemsDone, doneContext) =>
-                            FlatButton(
-                          padding: EdgeInsets.zero,
-                          onPressed: () => Navigator.pop(doneContext),
-                          child: buttonTitle,
-                        ),
                         closeButton: null,
+                        // closeButton: (selectedItems) => FlatButton(
+                        //   padding: EdgeInsets.zero,
+                        //   onPressed: () => Navigator.pop(field.context),
+                        //   child: buttonTitle,
+                        // ),
                         underline: Container(),
                         isExpanded: true,
                         searchHint: searchTitle,

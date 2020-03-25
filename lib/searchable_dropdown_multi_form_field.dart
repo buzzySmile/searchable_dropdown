@@ -6,7 +6,7 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
     Key key,
     @required String labelText,
     Widget searchTitle,
-    Widget buttonTitle = const Text('Закрыть'),
+    Widget buttonTitle = const Text('Выбрать'),
     List<T> initialValues,
     @required List<T> items,
     bool isRequired = false,
