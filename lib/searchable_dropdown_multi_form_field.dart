@@ -32,7 +32,6 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
               final InputDecoration effectiveDecoration = InputDecoration(
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                isDense: true,
               ).applyDefaults(Theme.of(field.context).inputDecorationTheme);
 
               return Column(

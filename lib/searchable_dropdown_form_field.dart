@@ -31,7 +31,6 @@ class SearchableDropdownFormField<T> extends FormField<T> {
               final InputDecoration effectiveDecoration = InputDecoration(
                 filled: true,
                 contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                isDense: true,
                 fillColor: (defaultValue != null && defaultValue != field.value)
                     ? Colors.greenAccent.shade100
                     : null,
