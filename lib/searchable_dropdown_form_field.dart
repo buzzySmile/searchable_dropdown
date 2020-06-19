@@ -6,6 +6,7 @@ class SearchableDropdownFormField<T> extends FormField<T> {
     Key key,
     @required String labelText,
     Widget searchTitle,
+    Widget closeButton,
     T defaultValue,
     T initialValue,
     @required List<T> items,
@@ -18,7 +19,7 @@ class SearchableDropdownFormField<T> extends FormField<T> {
   })  : assert(items != null || items.isNotEmpty || defaultValue != null),
         super(
             key: key,
-            initialValue: initialValue != null ? initialValue : defaultValue,
+            initialValue: initialValue ?? defaultValue,
             autovalidate: autovalidate,
             validator: (selectedItem) {
               if (isRequired && selectedItem == null) {
@@ -50,12 +51,7 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                           errorText: field.errorText),
                       isEmpty: field.value == null,
                       child: SearchableDropdown.single(
-                        closeButton: null,
-                        // closeButton: (selectedItems) => FlatButton(
-                        //   padding: EdgeInsets.zero,
-                        //   onPressed: () => Navigator.pop(field.context),
-                        //   child: buttonTitle,
-                        // ),
+                        closeButton: closeButton,
                         underline: Container(),
                         isExpanded: true,
                         searchHint: searchTitle,
