@@ -5,6 +5,7 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
   SearchableDropdownMultiFormField({
     Key key,
     @required String labelText,
+    Widget closeButton,
     Widget searchTitle,
     Widget buttonTitle = const Text('Выбрать'),
     List<T> initialValues,
@@ -54,7 +55,7 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
                           onPressed: () => Navigator.pop(doneContext),
                           child: buttonTitle,
                         ),
-                        closeButton: null,
+                        closeButton: closeButton,
                         underline: Container(),
                         isExpanded: true,
                         searchHint: searchTitle,
