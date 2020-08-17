@@ -11,10 +11,10 @@ class SearchableDropdownFormField<T> extends FormField<T> {
     T initialValue,
     @required List<T> items,
     bool isRequired = false,
-    // FocusNode focusNode,
     bool autovalidate = false,
     FormFieldValidator<T> validator,
     this.onChanged,
+    VoidCallback onValidationFailed,
     FormFieldSetter<T> onSaved,
   })  : assert(items != null || items.isNotEmpty || defaultValue != null),
         super(
@@ -23,6 +23,9 @@ class SearchableDropdownFormField<T> extends FormField<T> {
             autovalidate: autovalidate,
             validator: (selectedItem) {
               if (isRequired && selectedItem == null) {
+                if (onValidationFailed != null) {
+                  onValidationFailed();
+                }
                 return 'Необходимо выбрать значение';
               }
               return validator == null ? null : validator(selectedItem);

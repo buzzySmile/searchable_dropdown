@@ -11,9 +11,9 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
     List<T> initialValues,
     @required List<T> items,
     bool isRequired = false,
-    // FocusNode focusNode,
     bool autovalidate = false,
     FormFieldValidator<List<T>> validator,
+    VoidCallback onValidationFailed,
     this.onChanged,
     FormFieldSetter<List<T>> onSaved,
   })  : assert(items != null || items.isNotEmpty),
@@ -24,6 +24,9 @@ class SearchableDropdownMultiFormField<T> extends FormField<List<T>> {
             validator: (List<T> selectedItems) {
               if (isRequired &&
                   (selectedItems == null || selectedItems.isEmpty)) {
+                if (onValidationFailed != null) {
+                  onValidationFailed();
+                }
                 return 'Необходимо выбрать значение';
               }
               return validator == null ? null : validator(selectedItems);
