@@ -10,6 +10,7 @@ class SearchableDropdownFormField<T> extends FormField<T> {
     T defaultValue,
     T initialValue,
     @required List<T> items,
+    bool loading = false,
     bool isRequired = false,
     bool autovalidate = false,
     FormFieldValidator<T> validator,
@@ -40,6 +41,15 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                     : null,
               ).applyDefaults(Theme.of(field.context).inputDecorationTheme);
 
+              String _error;
+              if (loading) {
+                _error = 'Идет загрузка справочника...';
+              } else if (items.isEmpty) {
+                _error = 'Ошибка! Перезагрузите справочник';
+              } else if (field.value != null && !items.contains(field.value)) {
+                _error = 'Ошибка! Некорректное значение справочника';
+              }
+
               return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -51,9 +61,28 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                     ),
                     InputDecorator(
                       decoration: effectiveDecoration.copyWith(
-                          errorText: field.errorText),
-                      isEmpty: field.value == null,
+                          errorText: _error ?? field.errorText),
+                      isEmpty: field.value == null || loading,
                       child: SearchableDropdown.single(
+                        icon: loading
+                            ? Container(
+                                width: 24.0,
+                                height: 24.0,
+                                child: Material(
+                                  type: MaterialType.circle,
+                                  // elevation: 2.0,
+                                  color: Theme.of(field.context).canvasColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.3,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Theme.of(field.context).primaryColor),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const Icon(Icons.arrow_drop_down),
                         closeButton: closeButton,
                         underline: Container(),
                         isExpanded: true,
