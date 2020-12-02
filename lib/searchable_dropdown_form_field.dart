@@ -45,9 +45,9 @@ class SearchableDropdownFormField<T> extends FormField<T> {
               if (loading) {
                 _error = 'Идет загрузка справочника...';
               } else if (items.isEmpty) {
-                _error = 'Ошибка! Перезагрузите справочник';
+                _error = 'Внимание! Требуется загрузка справочника';
               } else if (field.value != null && !items.contains(field.value)) {
-                _error = 'Ошибка! Некорректное значение справочника';
+                _error = 'Внимание! Установлено некорректное значение';
               }
 
               return Column(
