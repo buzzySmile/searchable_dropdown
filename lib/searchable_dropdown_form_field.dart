@@ -65,19 +65,24 @@ class SearchableDropdownFormField<T> extends FormField<T> {
                       isEmpty: field.value == null || loading,
                       child: SearchableDropdown.single(
                         icon: loading
-                            ? Container(
-                                width: 24.0,
-                                height: 24.0,
-                                child: Material(
-                                  type: MaterialType.circle,
-                                  // elevation: 2.0,
-                                  color: Theme.of(field.context).canvasColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.3,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Theme.of(field.context).primaryColor),
+                            ? Padding(
+                                padding: EdgeInsets.only(right: 4.0),
+                                child: Container(
+                                  width: 24.0,
+                                  height: 24.0,
+                                  child: Material(
+                                    type: MaterialType.circle,
+                                    // elevation: 2.0,
+                                    color: Theme.of(field.context).canvasColor,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2.3,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Theme.of(field.context).primaryColor,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
